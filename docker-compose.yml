@@ -1,0 +1,22 @@
+version: '2'
+services: 
+
+   mongodb:
+     image: mongo:latest
+     container_name: "mongod"
+     environment:
+       - "MONGO_DATA_DIR=/data/db"
+       - "MONGO_LOG_DIR=/dev/null"
+     volumes:
+       - "./data/db:/data/db"
+     command: mongod --smallfiles --logpath=/dev/null 
+     network_mode: "bridge"
+
+   redis:
+     build: ./redis
+     container_name: "redis"
+     ports:
+       - "6379:6379"
+     links:
+       - "mongodb"
+     network_mode: "bridge"
